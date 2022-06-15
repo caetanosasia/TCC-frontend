@@ -1,0 +1,7 @@
+.main_footer {
+    height: 120px;
+    background-color: #526a7e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
