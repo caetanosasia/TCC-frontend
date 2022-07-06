@@ -2,12 +2,13 @@
   margin: 0;
   box-sizing: border-box;
   height: 100%;
+  display: flex;
 }
 .header_main {
   display: flex;
-  padding: 10px;
+  padding: 15px;
   font-family: "Roboto";
-  background-color: #526a7e;
+  background-color: #ffffff;
 }
 
 .nav_item {
@@ -33,6 +34,7 @@
 
 .dual_card_holder {
   display: flex;
+  flex: 1;
 }
 
 .dual_card_holder_mobile {
@@ -54,16 +56,21 @@
 .page, .page_mobile {
   padding: 10px;
   flex: 1;
-  background: linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(255,255,255,1) 50%, rgba(207,207,207,1) 100%);
+  background-color: #e3e2e2;
+  display: flex;
+  flex-direction: column;
 }
 
 .page_mobile{
   padding: 15px 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .cheap_scientist, .cheap_scientist_mobile {
-  font-family: "Dancing Script";
-  font-size: 50px;
+  font-family: "Roboto";
+  font-size: 20px;
+  margin: 0;
   font-weight: bold;
 }
 
@@ -81,7 +88,6 @@
 }
 
 .export_button_container {
-  flex: 1;
   align-items: center;
   display: flex;
   justify-content: flex-end;
