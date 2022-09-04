@@ -94,9 +94,31 @@ const api = {
         console.error('There was an error!', error);
       });
   }),
-  dropTable: () => new Promise((resolve) => {
-    const options = requestOptions('GET');
-    fetch(`${apiPath || 'http://localhost:3333'}/drop-table`, options)
+  login: (username, password) => new Promise((resolve) => {
+    console.log(username, password);
+    const options = requestOptions('POST', { email: username, password });
+    fetch(`${apiPath || 'http://localhost:3333'}/login`, options)
+      .then(async (response) => {
+        console.log('response! ', response);
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          const error = { error: (data && data.msg) || response.statusText || response.status };
+          resolve(error);
+        }
+        sessionStorage.setItem('session-token', data.token);
+        resolve({ ok: response.ok, data });
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  verifySession: () => new Promise((resolve) => {
+    const options = requestOptions('POST', { token: sessionStorage.getItem('session-token') });
+    fetch(`${apiPath || 'http://localhost:3333'}/session`, options)
       .then(async (response) => {
         const isJson = response.headers.get('content-type')?.includes('application/json');
         const data = isJson && await response.json();
@@ -106,7 +128,7 @@ const api = {
           const error = { error: (data && data.msg) || response.statusText || response.status };
           resolve(error);
         }
-        resolve(response.ok);
+        resolve({ ok: response.ok, data });
       })
       .catch((error) => {
         // don't return anything => execution goes the normal way
