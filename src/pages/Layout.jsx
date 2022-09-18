@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
 import {
   Route, BrowserRouter as Router, Switch, Redirect,
 } from 'react-router-dom';
-import { Button } from '@mui/material';
 import styles from './styles.module.css';
+import ExperimentDetail from './ExperimentDetail';
 import Home from './Home';
 import LoginScreen from './Login';
 import SideBar from '../components/sidebar/SideBar';
@@ -15,19 +16,10 @@ function Layout() {
   const [logged, setLogged] = useState(null);
   const [selectedDimension, setSelectedDimension] = useState(null);
 
-  // async function getData() {
-  //   const answer = await api.getHomeData();
-  //   if (!answer || answer.length === 0) return;
-  //   setData({
-  //     data: answer,
-  //   });
-  // }
-
   useEffect(() => {
     const token = sessionStorage.getItem('session-token');
     if (token && !logged) {
       api.verifySession().then((response) => {
-        console.log(response);
         if (response.ok) {
           setRedirectState(false);
           setLogged(response.data?.user);
@@ -55,16 +47,24 @@ function Layout() {
     <div className={styles.app_wrapper}>
       {data && selectedDimension && logged
       && <SideBar selectedDimension={selectedDimension} setSelectedDimension={setSelectedDimension} data={data.data} />}
-      <div style={{ flex: '1' }}>
-        {logged && <Button onClick={handleLogout} variant="contained">Logout</Button>}
+      <div className={styles.page_content}>
+        {logged && (
+        <div className={styles.header_main}>
+          <span style={{ marginRight: '5px' }}>{logged.name}</span>
+          <Button onClick={handleLogout} variant="contained">Logout</Button>
+        </div>
+        )}
         <Router>
           <Switch>
             <Route path="/login">
               <LoginScreen setRedirectState={setRedirectState} logged={logged} setLogged={setLogged} />
             </Route>
             {redirect}
+            <Route path="/experiment/:id">
+              <ExperimentDetail logged={logged} handleLogout={handleLogout} />
+            </Route>
             <Route path="/">
-              <Home />
+              <Home logged={logged} handleLogout={handleLogout} />
             </Route>
           </Switch>
         </Router>

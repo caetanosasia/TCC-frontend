@@ -3,7 +3,7 @@ import ReactECharts from 'echarts-for-react';
 import { format, parseISO } from 'date-fns';
 import styles from './styles.module.css';
 
-function HomeCard({ data, selectedDimension }) {
+function ChartCard({ data, selectedDimension }) {
   function getOption() {
     return {
       color: ['#526a7e'],
@@ -59,4 +59,4 @@ function HomeCard({ data, selectedDimension }) {
   );
 }
 
-export default HomeCard;
+export default ChartCard;
