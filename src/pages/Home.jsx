@@ -4,6 +4,7 @@ import {
   Typography, Button, Alert, Modal, Box, TextField,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './styles.module.css';
 import { api } from '../api/api';
 
@@ -23,6 +24,7 @@ const style = {
 
 function Home({ logged }) {
   const [isMobile] = useState(window.innerWidth < 768);
+  const [modalDeleteExperiment, setModalDeleteExperiment] = useState({ open: false });
   const [experiments, setExperiments] = useState([]);
   const [successMsg, setSuccessMsg] = useState(null);
   const [msg, setMsg] = useState(null);
@@ -76,6 +78,15 @@ function Home({ logged }) {
       }
     });
   }
+  function handleDeleteExperiment() {
+    api.deleteExperiment(modalDeleteExperiment.id).then((response) => {
+      if (response.ok) {
+        setSuccessMsg('Experiment deleted');
+        getData();
+        setModalDeleteExperiment({ open: false });
+      }
+    });
+  }
   return (
     <div className={isMobile ? styles.page_mobile : styles.page}>
       <div style={{ margin: '5px', width: '230px', maxHeight: '300px' }}>
@@ -88,9 +99,14 @@ function Home({ logged }) {
           className={styles.experiment_box}
           key={experiment.id}
         >
-          <div>
-            <Typography variant="h5">{experiment.name}</Typography>
-            <Typography variant="body1">{experiment.description || ''}</Typography>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Typography variant="h5">{experiment.name}</Typography>
+              <Typography variant="body1">{experiment.description || ''}</Typography>
+            </div>
+            <div>
+              <Button onClick={() => setModalDeleteExperiment({ ...experiment, open: true })}><DeleteIcon /></Button>
+            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Link to={`/experiment/${experiment.id}`}>Details</Link>
@@ -147,6 +163,34 @@ function Home({ logged }) {
             variant="contained"
           >
             Create
+          </Button>
+        </Box>
+      </Modal>
+      <Modal
+        open={modalDeleteExperiment.open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography
+            variant="h5"
+          >
+            {`Are you sure you want to delete this experiment (${modalDeleteExperiment.name})?`}
+          </Typography>
+          <Button
+            style={{ margin: '5px 0' }}
+            onClick={handleDeleteExperiment}
+            variant="contained"
+          >
+            Yes
+          </Button>
+          <Button
+            style={{ margin: '5px 0' }}
+            onClick={() => setModalDeleteExperiment(false)}
+            variant="contained"
+          >
+            No
           </Button>
         </Box>
       </Modal>

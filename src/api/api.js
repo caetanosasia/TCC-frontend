@@ -111,6 +111,22 @@ const api = {
         console.error('There was an error!', error);
       });
   }),
+  deleteExperiment: (experimentId) => new Promise((resolve) => {
+    const options = requestOptions('DELETE', { experimentId }, sessionStorage.getItem('session-token'));
+    fetch(`${apiPath || 'http://localhost:3333'}/experiments`, options)
+      .then(async (response) => {
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          resolve(response);
+        }
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
   resendVerificationEmail: (email) => new Promise((resolve) => {
     const options = requestOptions('POST', { email }, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/resend-email-verification`, options)
