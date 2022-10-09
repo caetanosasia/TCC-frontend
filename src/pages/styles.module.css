@@ -91,6 +91,7 @@
 
 .page, .page_mobile {
   padding: 10px;
+  max-height: calc(100% - 87px);
   flex: 1;
   flex-wrap: wrap;
   background-color: #e3e2e2;
@@ -100,8 +101,16 @@
 }
 
 .page_mobile{
-  padding: 15px 0;
+  padding: 0px 0 10px 0;
   display: flex;
+  background-color: transparent;
+  flex-direction: column;
+}
+
+.page_mobile > .card_main {
+  margin: 0;
+  max-width: 100%;
+  border: 0;
 }
 
 .page_login, .page_mobile_login {
@@ -115,8 +124,10 @@
 }
 
 .page_mobile{
-  padding: 15px 0;
   display: flex;
+  overflow: auto;
+  flex-wrap: nowrap;
+  flex-direction: column;
 }
 
 .cheap_scientist, .cheap_scientist_mobile {

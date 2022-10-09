@@ -1,8 +1,10 @@
-.card_main {
+.card_main,
+.card_main_mobile {
     display: flex;
     padding: 10px;
     background-color: white;
     margin: 0 10px;
+    max-width: calc(100% - 240px);
     border: 1px solid lightgrey;
     border-radius: 10px;
     font-family: "Roboto";
@@ -10,13 +12,19 @@
     flex-direction: column;
 }
 
-.card_main>div{
+.card_main_mobile {
+    background-color: transparent;
+    max-width: calc(100% - 10px);
+    border: 0;
+    margin: 0;
 }
 
 .card_header {
     display: flex;
     margin-left: 20px;
+    margin-top: 10px;
     justify-content: space-between;
+    align-items: center;
 }
 
 .value_box {

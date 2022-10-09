@@ -1,0 +1,59 @@
+.sidebar_main {
+    background-color: #0d0d0cad;
+    flex: 1;
+    width: 220px;
+    font-family: "Roboto";
+    color: rgb(234, 232, 232);
+}
+.background_image {
+    background-image: url('../../assets/img/foto-ufsc.jpg');
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+}
+.sidebar_header {
+    border-bottom: 1px solid rgb(234, 232, 232);
+    padding: 17px 15px;
+}
+
+.sidebar_campos {
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+}
+
+.sidebar_campos {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(212, 212, 212) transparent;
+}
+
+.sidebar_campos::-webkit-scrollbar {
+    width: 3px;
+    height: 5px; /* A altura só é vista quando a rolagem é horizontal */
+}
+
+.sidebar_campos::-webkit-scrollbar-track {
+    background: transparent;
+    padding: 2px;
+}
+
+.sidebar_campos::-webkit-scrollbar-thumb {
+    background-color: rgba(240, 240, 240, 0.664);
+}
+
+.sidebar_button,
+.sidebar_button_active {
+    color: rgb(234, 232, 232);
+    border: none;
+    background-color:transparent;
+    border-radius: 4px;
+    margin: 5px 0;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+.sidebar_button_active {
+    background-color: rgba(148, 147, 147, 0.453);
+}

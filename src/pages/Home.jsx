@@ -14,7 +14,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: window.innerWidth < 768 ? 250 : 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -22,7 +22,9 @@ const style = {
 };
 
 function Home({ logged }) {
+  const [isMobile] = useState(window.innerWidth < 768);
   const [experiments, setExperiments] = useState([]);
+  const [successMsg, setSuccessMsg] = useState(null);
   const [msg, setMsg] = useState(null);
   const [modal, setModal] = useState(false);
   const [experimentName, setExperimentName] = useState('');
@@ -30,8 +32,6 @@ function Home({ logged }) {
   function getData() {
     api.getHomeData().then(({ response, data }) => {
       if (response.ok) {
-        console.log(response);
-        console.log(data);
         setExperiments(data.experiments);
       }
     });
@@ -43,7 +43,7 @@ function Home({ logged }) {
   }, [logged]);
   function handleCreateExperiment() {
     if (!logged.verified) {
-      setMsg('Sua conta deve ser verificada para poder criar um experimento');
+      setMsg('Please, verify your email before creating an experiment');
       return;
     }
     setModal(true);
@@ -61,13 +61,23 @@ function Home({ logged }) {
   function handleSubmit() {
     api.createExperiment(experimentName, experimentDescription).then(({ response }) => {
       if (response.ok) {
+        setSuccessMsg('Experiment created');
         getData();
         handleClose();
       }
     });
   }
+  function handleResendExperimentToken(experimentId) {
+    api.resendExperimentToken(experimentId).then((response) => {
+      if (response.ok) {
+        setSuccessMsg('Token sent');
+      } else {
+        setMsg('Error sending token');
+      }
+    });
+  }
   return (
-    <div className={window.innerWidth < 820 ? styles.page_mobile : styles.page}>
+    <div className={isMobile ? styles.page_mobile : styles.page}>
       <div style={{ margin: '5px', width: '230px', maxHeight: '300px' }}>
         <Button onClick={handleCreateExperiment} className={styles.create_experiment}>
           <Add sx={{ color: '#b1b1b1' }} fontSize="large" />
@@ -82,8 +92,9 @@ function Home({ logged }) {
             <Typography variant="h5">{experiment.name}</Typography>
             <Typography variant="body1">{experiment.description || ''}</Typography>
           </div>
-          <div>
-            <Link to={`/experiment/${experiment.id}`}>Ver detalhes</Link>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Link to={`/experiment/${experiment.id}`}>Details</Link>
+            <Button onClick={() => handleResendExperimentToken(experiment.id)}>Resend experiment Token</Button>
           </div>
         </div>
       ))}
@@ -98,6 +109,17 @@ function Home({ logged }) {
         {msg}
       </Alert>
       )}
+      {successMsg && (
+      <Alert
+        style={{
+          position: 'fixed', bottom: '30px', right: '30px', maxWidth: 'calc(100% - 90px)',
+        }}
+        onClose={() => setSuccessMsg(null)}
+        severity="success"
+      >
+        {successMsg}
+      </Alert>
+      )}
       <Modal
         open={modal}
         onClose={handleClose}
@@ -109,14 +131,14 @@ function Home({ logged }) {
             style={{ margin: '5px 0' }}
             onChange={handleSetExperimentName}
             id="experiment-name"
-            label="Nome do experimento"
+            label="Experiment name"
             variant="outlined"
           />
           <TextField
             style={{ margin: '5px 0' }}
             onChange={handleExperimentDescription}
             id="description"
-            label="Descrição"
+            label="Description"
             variant="outlined"
           />
           <Button
@@ -124,7 +146,7 @@ function Home({ logged }) {
             onClick={handleSubmit}
             variant="contained"
           >
-            Criar
+            Create
           </Button>
         </Box>
       </Modal>

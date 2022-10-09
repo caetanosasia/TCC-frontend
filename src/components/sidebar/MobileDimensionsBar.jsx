@@ -1,13 +1,10 @@
 import React from 'react';
-import styles from './styles.module.css';
+import styles from './styles_mobile.module.css';
 
-function SideBar({ data, selectedDimension, setSelectedDimension }) {
+function MobileDimensionsBar({ data, selectedDimension, setSelectedDimension }) {
   return (
     <div className={styles.background_image}>
       <div className={styles.sidebar_main}>
-        <div className={styles.sidebar_header}>
-          Dimension
-        </div>
         <div className={styles.sidebar_campos}>
           {Object.values(data).map(({ key }) => (
             <button
@@ -25,4 +22,4 @@ function SideBar({ data, selectedDimension, setSelectedDimension }) {
   );
 }
 
-export default SideBar;
+export default MobileDimensionsBar;

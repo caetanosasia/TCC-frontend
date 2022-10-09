@@ -111,6 +111,54 @@ const api = {
         console.error('There was an error!', error);
       });
   }),
+  resendVerificationEmail: (email) => new Promise((resolve) => {
+    const options = requestOptions('POST', { email }, sessionStorage.getItem('session-token'));
+    fetch(`${apiPath || 'http://localhost:3333'}/resend-email-verification`, options)
+      .then(async (response) => {
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          resolve(response);
+        }
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  resendExperimentToken: (experimentId) => new Promise((resolve) => {
+    const options = requestOptions('POST', { experimentId }, sessionStorage.getItem('session-token'));
+    fetch(`${apiPath || 'http://localhost:3333'}/resend-experiment-token`, options)
+      .then(async (response) => {
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          resolve(response);
+        }
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  createAccount: ({ email, name, password }) => new Promise((resolve) => {
+    const options = requestOptions('POST', { name, email, password });
+    fetch(`${apiPath || 'http://localhost:3333'}/create-user`, options)
+      .then(async (response) => {
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          resolve(response);
+        }
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
   getExperimentById: (id) => new Promise((resolve) => {
     const options = requestOptions('GET', null, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/get-data/${id}`, options)

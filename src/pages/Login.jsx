@@ -22,14 +22,18 @@ function Login({ setLogged, logged, setRedirectState }) {
   const handleSubmit = () => {
     api.login(username, password).then((response) => {
       console.log(response);
-      if (response.status === 401) {
-        setMsg('User os password incorrect');
+      if (response.status === 403) {
+        setMsg('User or password incorrect');
       }
       if (response.ok) {
         setLogged(response.data?.user);
       }
     });
   };
+
+  function handleCreateAccount() {
+    history.push('/create-account');
+  }
 
   useEffect(() => {
     if (logged) {
@@ -74,7 +78,24 @@ function Login({ setLogged, logged, setRedirectState }) {
         Login
 
       </Button>
-      {msg && <Alert severity="error">{msg}</Alert>}
+      <Button
+        style={{ margin: '5px 0' }}
+        onClick={handleCreateAccount}
+        variant="contained"
+      >
+        Create Accoun
+      </Button>
+      {msg && (
+      <Alert
+        style={{
+          position: 'fixed', bottom: '30px', right: '30px', maxWidth: 'calc(100% - 90px)',
+        }}
+        onClose={() => setMsg(null)}
+        severity="error"
+      >
+        {msg}
+      </Alert>
+      )}
     </div>
   );
 }

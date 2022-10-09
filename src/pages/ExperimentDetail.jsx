@@ -8,8 +8,10 @@ import { api } from '../api/api';
 import styles from './styles.module.css';
 import ChartCard from '../components/ChartCard/ChartCard';
 import SideBar from '../components/sidebar/SideBar';
+import MobileDimensionsBar from '../components/sidebar/MobileDimensionsBar';
 
 function ExperimentDetail() {
+  const [isMobile] = useState(window.innerWidth < 768);
   const [chartData, setChartData] = useState(null);
   const [selectedDimension, setSelectedDimension] = useState(null);
   const [msg, setMsg] = useState(null);
@@ -27,7 +29,7 @@ function ExperimentDetail() {
     }
   }, [id]);
   return (
-    <div className={window.innerWidth < 820 ? styles.page_mobile : styles.page}>
+    <div className={isMobile ? styles.page_mobile : styles.page}>
       {msg && (
       <Alert
         style={{
@@ -39,8 +41,15 @@ function ExperimentDetail() {
         {msg}
       </Alert>
       )}
-      {chartData && (
+      {chartData && !isMobile && (
       <SideBar
+        data={chartData}
+        selectedDimension={selectedDimension}
+        setSelectedDimension={setSelectedDimension}
+      />
+      )}
+      {chartData && isMobile && (
+      <MobileDimensionsBar
         data={chartData}
         selectedDimension={selectedDimension}
         setSelectedDimension={setSelectedDimension}

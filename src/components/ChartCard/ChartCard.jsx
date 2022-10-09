@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactECharts from 'echarts-for-react';
+import DownloadIcon from '@mui/icons-material/Download';
+import { Button } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import styles from './styles.module.css';
 
 function ChartCard({ data, selectedDimension }) {
+  const [isMobile] = useState(window.innerWidth < 768);
+  function downloadCSV() {
+    const cloneData = JSON.parse(JSON.stringify(data));
+    console.log(data[selectedDimension]);
+    const csv = `data:text/csv;charset=utf-8,${
+      cloneData[selectedDimension].data.map((row, i) => {
+        console.log(row);
+        const formattedRow = row;
+        delete formattedRow.id;
+        formattedRow[selectedDimension] = formattedRow.value;
+        delete formattedRow.value;
+        let newRow = Object.values(row);
+        newRow = newRow.join(';');
+        if (i === 0) {
+          newRow = `${Object.keys(formattedRow).join(';')}
+${newRow}`;
+        }
+        return newRow;
+      }).join('\r\n')}`;
+    const encodedUri = encodeURI(csv);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `${selectedDimension}.csv`);
+    document.body.appendChild(link);
+    link.click();
+  }
   function getOption() {
     return {
       color: ['#526a7e'],
@@ -13,13 +41,9 @@ function ChartCard({ data, selectedDimension }) {
       },
       yAxis: {
         type: 'value',
-        // axisLabel: {
-        //   formatter: (item) => `${item}${config.formatter ? config.formatter : ''}`,
-        // },
       },
       tooltip: {
         trigger: 'axis',
-        // formatter: `${config.name}:  {c}${config.formatter ? config.formatter : ''} <br/> {b}`,
       },
       dataZoom: [
         {
@@ -42,15 +66,20 @@ function ChartCard({ data, selectedDimension }) {
     };
   }
   return (
-    <div className={styles.card_main}>
+    <div className={isMobile ? styles.card_main_mobile : styles.card_main}>
       <div className={styles.card_header}>
-        <h1>{selectedDimension}</h1>
+        <p style={{ fontSize: '30px', margin: '0 0 0 0' }}>{selectedDimension}</p>
+        <Button onClick={downloadCSV}><DownloadIcon /></Button>
       </div>
       <div className={styles.link_container}>
         <ReactECharts
           option={getOption()}
           notMerge
-          style={{ height: 'calc( 100% - 40px)' }}
+          style={{
+            height: 'calc( 100% - 40px)',
+            maxWidth: `calc(100% - ${isMobile ? '20px' : '40px'})`,
+            padding: isMobile && '0 0 10px 0',
+          }}
           lazyUpdate
           theme="theme_name"
         />
