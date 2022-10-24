@@ -131,11 +131,6 @@ const api = {
     const options = requestOptions('POST', { email }, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/resend-email-verification`, options)
       .then(async (response) => {
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          resolve(response);
-        }
         resolve(response);
       })
       .catch((error) => {
@@ -147,11 +142,6 @@ const api = {
     const options = requestOptions('POST', { experimentId }, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/resend-experiment-token`, options)
       .then(async (response) => {
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          resolve(response);
-        }
         resolve(response);
       })
       .catch((error) => {
@@ -178,6 +168,24 @@ const api = {
   getExperimentById: (id) => new Promise((resolve) => {
     const options = requestOptions('GET', null, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/get-data/${id}`, options)
+      .then(async (response) => {
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          resolve(response);
+        }
+        resolve({ response, data: data.data || data });
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  getDataToExport: (id) => new Promise((resolve) => {
+    const options = requestOptions('GET', null, sessionStorage.getItem('session-token'));
+    fetch(`${apiPath || 'http://localhost:3333'}/experiment-to-export/${id}`, options)
       .then(async (response) => {
         const isJson = response.headers.get('content-type')?.includes('application/json');
         const data = isJson && await response.json();

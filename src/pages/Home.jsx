@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Typography, Button, Alert, Modal, Box, TextField,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import HomeCard from '../components/HomeCard/HomeCard';
 import styles from './styles.module.css';
 import { api } from '../api/api';
 
@@ -95,24 +94,13 @@ function Home({ logged }) {
         </Button>
       </div>
       {experiments.length > 0 && experiments.map((experiment) => (
-        <div
-          className={styles.experiment_box}
+        <HomeCard
           key={experiment.id}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
-              <Typography variant="h5">{experiment.name}</Typography>
-              <Typography variant="body1">{experiment.description || ''}</Typography>
-            </div>
-            <div>
-              <Button onClick={() => setModalDeleteExperiment({ ...experiment, open: true })}><DeleteIcon /></Button>
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Link to={`/experiment/${experiment.id}`}>Details</Link>
-            <Button onClick={() => handleResendExperimentToken(experiment.id)}>Resend experiment Token</Button>
-          </div>
-        </div>
+          experiment={experiment}
+          setModalDeleteExperiment={setModalDeleteExperiment}
+          handleResendExperimentToken={handleResendExperimentToken}
+        />
+
       ))}
       {msg && (
       <Alert

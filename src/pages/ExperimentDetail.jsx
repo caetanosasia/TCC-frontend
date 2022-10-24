@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Alert,
 } from '@mui/material';
@@ -30,6 +30,9 @@ function ExperimentDetail() {
   }, [id]);
   return (
     <div className={isMobile ? styles.page_mobile : styles.page}>
+      <div style={{ position: 'absolute', left: '25px', top: isMobile ? '28px' : '25px' }}>
+        <Link style={{ textDecoration: 'none' }} to="/">Home</Link>
+      </div>
       {msg && (
       <Alert
         style={{
