@@ -115,11 +115,6 @@ const api = {
     const options = requestOptions('DELETE', { experimentId }, sessionStorage.getItem('session-token'));
     fetch(`${apiPath || 'http://localhost:3333'}/experiments`, options)
       .then(async (response) => {
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          resolve(response);
-        }
         resolve(response);
       })
       .catch((error) => {
@@ -153,11 +148,30 @@ const api = {
     const options = requestOptions('POST', { name, email, password });
     fetch(`${apiPath || 'http://localhost:3333'}/create-user`, options)
       .then(async (response) => {
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          resolve(response);
-        }
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  changePassword: ({ password, token }) => new Promise((resolve) => {
+    console.log('token', token);
+    console.log('password', password);
+    const options = requestOptions('POST', { token, password });
+    fetch(`${apiPath || 'http://localhost:3333'}/change-password`, options)
+      .then(async (response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        // don't return anything => execution goes the normal way
+        console.error('There was an error!', error);
+      });
+  }),
+  recoverPassword: ({ email }) => new Promise((resolve) => {
+    const options = requestOptions('POST', { email });
+    fetch(`${apiPath || 'http://localhost:3333'}/recover-password`, options)
+      .then(async (response) => {
         resolve(response);
       })
       .catch((error) => {

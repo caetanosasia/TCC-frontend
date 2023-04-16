@@ -7,9 +7,11 @@ import styles from './styles.module.css';
 import ExperimentDetail from './ExperimentDetail';
 import Home from './Home';
 import CreateAccount from './CreateAccount';
+import ForgotPassword from './ForgotPassword';
 import LoginScreen from './Login';
 import SideBar from '../components/sidebar/SideBar';
 import { api } from '../api/api';
+import ChangePassword from './ChangePassword';
 
 function Layout() {
   const [data] = useState(null);
@@ -25,6 +27,8 @@ function Layout() {
         if (response.ok) {
           setRedirectState(false);
           setLogged(response.data?.user);
+        } else {
+          setRedirectState(true);
         }
       });
     } else {
@@ -74,8 +78,18 @@ function Layout() {
             <Route path="/create-account">
               <CreateAccount />
             </Route>
+            <Route path="/forgot-password">
+              <ForgotPassword />
+            </Route>
+            <Route path="/change-password/:token">
+              <ChangePassword />
+            </Route>
             <Route path="/login">
-              <LoginScreen setRedirectState={setRedirectState} logged={logged} setLogged={setLogged} />
+              <LoginScreen
+                setRedirectState={setRedirectState}
+                logged={logged}
+                setLogged={setLogged}
+              />
             </Route>
             {redirect}
             <Route path="/experiment/:id">

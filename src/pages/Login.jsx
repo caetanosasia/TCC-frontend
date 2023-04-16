@@ -6,7 +6,9 @@ import {
 import styles from './styles.module.css';
 import { api } from '../api/api';
 
-function Login({ setLogged, logged, setRedirectState }) {
+function Login({
+  setLogged, logged, setRedirectState,
+}) {
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +35,10 @@ function Login({ setLogged, logged, setRedirectState }) {
 
   function handleCreateAccount() {
     history.push('/create-account');
+  }
+
+  function handleForgotPassword() {
+    history.push('/forgot-password');
   }
 
   useEffect(() => {
@@ -78,13 +84,23 @@ function Login({ setLogged, logged, setRedirectState }) {
         Login
 
       </Button>
-      <Button
-        style={{ margin: '5px 0' }}
-        onClick={handleCreateAccount}
-        variant="contained"
-      >
-        Create Accoun
-      </Button>
+      <div>
+        <Button
+          style={{ margin: '5px 5px 5px 0' }}
+          onClick={handleCreateAccount}
+          variant="contained"
+        >
+          Create Account
+        </Button>
+        <Button
+          style={{ margin: '5px 0 5px 5px' }}
+          onClick={handleForgotPassword}
+          variant="contained"
+        >
+          Forgot Password
+        </Button>
+      </div>
+
       {msg && (
       <Alert
         style={{
