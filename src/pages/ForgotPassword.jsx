@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import {
   Button, Alert, TextField,
 } from '@mui/material';
-// import styles from './styles.module.css';
 import { api } from '../api/api';
 
 function ForgotPassword() {

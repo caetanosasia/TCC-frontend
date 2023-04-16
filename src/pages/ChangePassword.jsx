@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import {
   Button, Alert, TextField,
 } from '@mui/material';
-// import styles from './styles.module.css';
 import { api } from '../api/api';
 
 function ChangePassword() {
@@ -13,7 +12,6 @@ function ChangePassword() {
   const [password, setPassword] = useState(null);
   const { token } = useParams();
   const [verifyPassword, setVerifyPassword] = useState(null);
-  // eslint-disable-next-line max-len
   useEffect(() => {
     if (password !== verifyPassword && verifyPassword !== null) {
       setMsg('Passwords do not match');

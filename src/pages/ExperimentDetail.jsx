@@ -4,7 +4,6 @@ import {
   Alert,
 } from '@mui/material';
 import { api } from '../api/api';
-// import { Add } from '@mui/icons-material';
 import styles from './styles.module.css';
 import ChartCard from '../components/ChartCard/ChartCard';
 import SideBar from '../components/sidebar/SideBar';

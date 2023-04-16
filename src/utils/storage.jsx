@@ -10,7 +10,7 @@ storage.get = (key) => {
     return null;
   }
 };
-storage.remove = key => localStorage.removeItem(key);
+storage.remove = (key) => localStorage.removeItem(key);
 
 // Safari in incognito has local storage, but size 0
 // should fall back to cookies in this situation... to be done
