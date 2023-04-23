@@ -24,7 +24,7 @@ function Login({
   const handleSubmit = () => {
     api.login(username, password).then((response) => {
       console.log(response);
-      if (response.status === 403) {
+      if (response.status === 401) {
         setMsg('User or password incorrect');
       }
       if (response.ok) {
